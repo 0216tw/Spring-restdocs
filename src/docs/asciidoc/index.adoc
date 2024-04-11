@@ -1,0 +1,113 @@
+= 사용자 CRUD 기능 restDocs REST API 문서
+made by taewoo 
+:doctype: book
+:icons: font
+:source-highlighter: coderay
+:toc: left
+:toc-title: 목차
+:toclevels: 3
+:sectlinks:
+:sectnums:
+
+= 개요
+이 API문서는 [사용자 CRUD를 통한 restDocs REST API] 예시 문서입니다. 
+
+= 기능
+
+== 사용자 전체 조회(READ ALL) 
+
+=== 입력파라미터
+없음 
+
+=== 출력파라미터 
+include::build/generated-snippets/find-all-user-test/response-fields.adoc[]
+
+=== 예시  
+
+==== http 요청
+include::build/generated-snippets/find-all-user-test/http-request.adoc[]
+
+==== http 응답 
+include::build/generated-snippets/find-all-user-test/response-body.adoc[]
+
+==== curl 요청 예
+include::build/generated-snippets/find-all-user-test/curl-request.adoc[]
+
+
+== 특정 사용자 조회(READ)
+
+=== 입력파라미터
+include::build/generated-snippets/find-user-test/request-fields.adoc[]
+
+=== 출력파라미터 
+include::build/generated-snippets/find-user-test/response-fields.adoc[]
+
+=== 예시  
+
+==== http 요청
+include::build/generated-snippets/find-user-test/http-request.adoc[]
+
+==== http 응답 
+include::build/generated-snippets/find-user-test/response-body.adoc[]
+
+==== curl 요청 예
+include::build/generated-snippets/find-user-test/curl-request.adoc[]
+
+
+== 새로운 사용자 등록(CREATE) 
+
+=== 입력파라미터
+include::build/generated-snippets/insert-user-test/request-fields.adoc[]
+
+=== 출력파라미터 
+include::build/generated-snippets/insert-user-test/response-fields.adoc[]
+
+=== 예시  
+
+==== http 요청
+include::build/generated-snippets/insert-user-test/http-request.adoc[]
+
+==== http 응답 
+include::build/generated-snippets/insert-user-test/response-body.adoc[]
+
+==== curl 요청 예
+include::build/generated-snippets/insert-user-test/curl-request.adoc[]
+
+== 특정 사용자 정보 수정(UPDATE)
+
+=== 입력파라미터
+include::build/generated-snippets/update-user-test/request-fields.adoc[]
+
+=== 출력파라미터 
+include::build/generated-snippets/update-user-test/response-fields.adoc[]
+
+=== 예시  
+
+==== http 요청
+include::build/generated-snippets/update-user-test/http-request.adoc[]
+
+==== http 응답 
+include::build/generated-snippets/update-user-test/response-body.adoc[]
+
+==== curl 요청 예
+include::build/generated-snippets/insert-user-test/curl-request.adoc[]
+
+== 특정 사용자 정보 삭제(DELETE)
+
+=== 입력파라미터
+include::build/generated-snippets/delete-user-test/path-parameters.adoc[]
+
+=== 출력파라미터 
+include::build/generated-snippets/delete-user-test/response-fields.adoc[]
+
+=== 예시  
+
+==== http 요청
+include::build/generated-snippets/delete-user-test/http-request.adoc[]
+
+==== http 응답 
+include::build/generated-snippets/delete-user-test/response-body.adoc[]
+
+==== curl 요청 예
+include::build/generated-snippets/insert-user-test/curl-request.adoc[]
+

@@ -1,0 +1,82 @@
+plugins { 
+  id "org.springframework.boot" version "2.7.18" //Spring Boot 플러그인을 이용해 프로젝트 구성에 필요한 기능 제공
+  id "io.spring.dependency-management" version "1.0.13.RELEASE" //Spring Boot 의존성 관리를 위한 플러그인 추가
+  id "org.asciidoctor.jvm.convert" version "3.3.2" //Asciiidoctor JVM 컨버터(변환기) 플러그인 추가
+  id "com.epages.restdocs-api-spec" version "0.16.2" //Restdocs API 스펙 플러그인 추가
+  id "java"
+}
+
+group = "com.study.restdocs"
+version = "1.0.0"
+sourceCompatibility = JavaVersion.VERSION_17 //소스 호환성을 Java17로 설정
+
+configurations {
+  compileOnly { //컴파일 시에만 필요한 의존설정 <-> runtimeOnly 런타임시에만 필요한 의존설정
+    extendsFrom annotationProcessor
+  }
+  asciidoctorExt //AsciiDoctor 확장에 필요한 의존성 설정
+}
+
+repositories {
+  mavenCentral()
+}
+
+ext {
+  set("snippetsDir", file("build/generated-snippets"))
+  // snippectsDir 라는 변수명으로 build/generated-snippets 디렉터리를 가리키도록 하고
+  // 이는 테스트 완료시 생성되는 adoc파일이 모이는 경로가 됨
+}
+
+dependencies {
+implementation("org.springframework.boot:spring-boot-starter-web")
+//implementation("org.springframework.boot:spring-boot-starter-validation")
+//implementation("com.google.code.findbugs:jsr305:3.0.2")
+
+compileOnly("org.projectlombok:lombok")
+annotationProcessor("org.projectlombok:lombok")
+annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
+//implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.1"
+//implementation "javax.validation:validation-api:2.0.1.Final"
+
+implementation "com.googlecode.json-simple:json-simple:1.1.1"
+
+
+testImplementation("org.springframework.boot:spring-boot-starter-test")
+testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc") //restdocs를 impl 하기 위한 의존성 주입
+testImplementation("org.springframework.restdocs:spring-restdocs-asciidoctor") //adoc 파일-> html 등으로 변환해주는 컨버터
+testImplementation "org.junit.jupiter:junit-jupiter-api:5.8.2"
+testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
+}
+
+asciidoctor {
+  inputs.dir snippetsDir //asciidoctor가 사용할 input 파일 위치를 지정 (snippetsDir에 존재)
+  configurations 'asciidoctorExt'
+} dependsOn test //test시에만 실행되도록 함
+
+asciidoctor.doFirst {
+  delete file('src/main/resources/static/docs') //반복 실행시 이전에 생성한 파일을 먼저 삭제하도록 함
+}
+
+task copyDocument(type: Copy) {
+  dependsOn asciidoctor
+  from file("build/docs/asciidoc") //복사할 소스 디렉터리
+  into file("src/main/resources/static/docs") //복사될 대상 디렉터리
+}
+
+test {
+  useJUnitPlatform()      //junit 테스트를 실행하기 위한 JUnit Platform 사용
+  outputs.dir snippetsDir //테스트 결과 디렉터리 설정
+}
+
+build {
+  dependsOn copyDocument
+}
+
+bootJar {
+  dependsOn asciidoctor
+  copy {
+    from "${asciidoctor.outputDir}"
+    into "BOOT-INF/classes/static/docs"
+  }
+}
